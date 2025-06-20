@@ -28,7 +28,6 @@ import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { X, Plus } from "lucide-react";
 import { addQuotation, updateQuotation, getQuotationRequestById, getQuotationById } from "@/lib/quotations";
-import { generateAndSavePDF } from '@/lib/generateQuotationPdf';
 import { useCompanyStore } from "@/lib/companies";
 import { saveAnnexureFile } from '@/lib/annexureUpload';
 import PreviewQuotation from './PreviewQuotation';
@@ -413,13 +412,20 @@ function QuotationForm() {
         externalStatus: newQuotation.externalStatus!,
         actionHistory: newQuotation.actionHistory!,
         items: mappedItems,
+        myCompany: newQuotation.myCompany,
       };
 
       console.log('Quotation for PDF:', pdfQuotation);
 
       try {
         // Generate the PDF with the real quotation number and all values
-        const pdfUrl = await generateAndSavePDF(pdfQuotation);
+        // const pdfUrl = await generateAndSavePDF(pdfQuotation);
+        const response = await fetch('/api/quotations/save-pdf', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(pdfQuotation),
+        });
+        const { url: pdfUrl } = await response.json();
 
         // Save annexure file if provided
         let annexureUrl = "";
