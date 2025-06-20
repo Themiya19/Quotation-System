@@ -1,0 +1,32 @@
+[
+  {
+    "id": "engineering",
+    "name": "Engineering",
+    "description": "Software development and technical teams"
+  },
+  {
+    "id": "sales",
+    "name": "Sales",
+    "description": "Sales and business development teams"
+  },
+  {
+    "id": "marketing",
+    "name": "Marketing",
+    "description": "Marketing and brand management teams"
+  },
+  {
+    "id": "finance",
+    "name": "Finance",
+    "description": "Finance and accounting teams"
+  },
+  {
+    "id": "hr",
+    "name": "Human Resources",
+    "description": "HR and people management teams"
+  },
+  {
+    "id": "operations",
+    "name": "Operations",
+    "description": "Operations and logistics teams"
+  }
+] 

@@ -1,0 +1,40 @@
+{
+  "roles": [
+    {
+      "id": "ext_client",
+      "name": "Client",
+      "description": "External client user with limited access",
+      "permissions": [
+        "view_reports",
+        "submit_requests"
+      ]
+    },
+    {
+      "id": "ext_vendor",
+      "name": "Vendor",
+      "description": "External vendor with supply chain access",
+      "permissions": [
+        "view_inventory",
+        "update_supplies"
+      ]
+    },
+    {
+      "id": "ext_partner",
+      "name": "Partner",
+      "description": "Business partner with collaborative access",
+      "permissions": [
+        "view_projects",
+        "collaborate_tasks"
+      ]
+    },
+    {
+      "id": "ext_consultant",
+      "name": "Consultant",
+      "description": "External consultant with specialized access",
+      "permissions": [
+        "view_analytics",
+        "provide_feedback"
+      ]
+    }
+  ]
+}

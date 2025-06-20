@@ -1,0 +1,143 @@
+[
+  {
+    "id": "manage_users",
+    "name": "Manage Users",
+    "description": "Add, edit, and delete users",
+    "allowedRoles": [
+      "sales",
+      "engineer",
+      "admin",
+      "manager"
+    ]
+  },
+  {
+    "id": "manage_companies",
+    "name": "Manage Companies",
+    "description": "Add, edit, and delete companies",
+    "allowedRoles": [
+      "manager",
+      "sales",
+      "engineer",
+      "admin",
+      "sales_engineer"
+    ]
+  },
+  {
+    "id": "manage_my_company",
+    "name": "Manage My Company",
+    "description": "Add, edit, and delete internal company profiles",
+    "allowedRoles": [
+      "admin",
+      "manager",
+      "sales_engineer"
+    ]
+  },
+  {
+    "id": "manage_roles",
+    "name": "Manage Roles",
+    "description": "Add, edit, and delete profile roles",
+    "allowedRoles": [
+      "admin",
+      "sales",
+      "sales_engineer",
+      "manager"
+    ]
+  },
+  {
+    "id": "manage_features",
+    "name": "Manage Features",
+    "description": "Configure feature permissions for roles",
+    "allowedRoles": [
+      "admin",
+      "sales_engineer",
+      "sales",
+      "manager"
+    ]
+  },
+  {
+    "id": "view_own_quotations_only",
+    "name": "View Own Quotations Only",
+    "description": "User can only view quotations they created",
+    "allowedRoles": [
+      "sales",
+      "sales engineer",
+      "engineer"
+    ]
+  },
+  {
+    "id": "view_department_data",
+    "name": "View Department Data Only",
+    "description": "User can only view data from their own department",
+    "allowedRoles": [
+      "sales",
+      "sales engineer",
+      "engineer"
+    ]
+  },
+  {
+    "id": "create_quotations",
+    "name": "Create Quotations",
+    "description": "Create new quotations",
+    "allowedRoles": [
+      "sales engineer",
+      "sales",
+      "engineer",
+      "engineering",
+      "sales_engineer",
+      "admin",
+      "manager"
+    ]
+  },
+  {
+    "id": "edit_quotations",
+    "name": "Edit Quotations",
+    "description": "Edit existing quotations",
+    "allowedRoles": [
+      "sales engineer",
+      "sales",
+      "engineer",
+      "admin",
+      "sales_engineer"
+    ]
+  },
+  {
+    "id": "approve_quotations",
+    "name": "Approve Quotations",
+    "description": "Review, approve, reject, and request revisions for quotations",
+    "allowedRoles": [
+      "manager",
+      "admin",
+      "sales_engineer"
+    ]
+  },
+  {
+    "id": "delete_quotations",
+    "name": "Delete Quotations",
+    "description": "Delete existing quotations",
+    "allowedRoles": [
+      "sales",
+      "admin",
+      "sales_engineer"
+    ]
+  },
+  {
+    "id": "view_quotation_analytics",
+    "name": "View Analytics",
+    "description": "Access to quotation analytics and reports",
+    "allowedRoles": [
+      "sales engineer",
+      "engineer",
+      "admin",
+      "sales_engineer"
+    ]
+  },
+  {
+    "id": "update_client_status",
+    "name": "Update Client Status",
+    "description": "Update client approval status for quotations",
+    "allowedRoles": [
+      "manager",
+      "admin"
+    ]
+  }
+]

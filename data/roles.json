@@ -1,0 +1,24 @@
+{
+  "roles": [
+    {
+      "id": "admin",
+      "name": "Admin",
+      "description": "Full system access"
+    },
+    {
+      "id": "manager",
+      "name": "Manager",
+      "description": "Team management access"
+    },
+    {
+      "id": "sales_engineer",
+      "name": "Sales Engineer",
+      "description": "Technical sales support"
+    },
+    {
+      "id": "sales",
+      "name": "Sales",
+      "description": "Sales operations"
+    }
+  ]
+}

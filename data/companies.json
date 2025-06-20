@@ -1,0 +1,69 @@
+[
+  {
+    "id": "1741597627519",
+    "name": "sri lanka",
+    "currency": "LKR",
+    "emailTo": [
+      "themiyawanigasekara19@gmail.com"
+    ],
+    "emailCC": [
+      "themiyawanigasekara19@gmail.com"
+    ],
+    "address": "148,4/ Walagedara / Wattppola\nWalagedara",
+    "attention": "wanigasekara",
+    "terms": [
+      {
+        "id": 1,
+        "content": "term 1\n"
+      }
+    ]
+  },
+  {
+    "id": "1742875686280",
+    "name": "Azbil",
+    "currency": "USD",
+    "emailTo": [
+      "themiyawanigasekara19@gmail.com",
+      "themiyawanigasekara@gmail.com"
+    ],
+    "emailCC": [
+      "themiyawanigasekara19@gmail.com",
+      "themiyawanigasekara9@gmail.com"
+    ],
+    "address": "Australia",
+    "attention": "dsfdsaf",
+    "terms": [
+      {
+        "id": 1,
+        "content": "dfsf lfdsfa"
+      },
+      {
+        "id": 2,
+        "content": "fadsfad"
+      }
+    ]
+  },
+  {
+    "id": "1742875762726",
+    "name": "alpine",
+    "currency": "USD",
+    "emailTo": [
+      "themiyawanigasekara19@gmail.com"
+    ],
+    "emailCC": [
+      "themiyawanigasekara19@gmail.com"
+    ],
+    "address": "",
+    "attention": "",
+    "terms": [
+      {
+        "id": 1,
+        "content": "fdds gsfdg"
+      },
+      {
+        "id": 2,
+        "content": "fgsg"
+      }
+    ]
+  }
+]

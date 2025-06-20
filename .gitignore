@@ -1,0 +1,28 @@
+# Node modules
+node_modules/
+**/node_modules/
+
+# Build output
+.next/
+out/
+dist/
+build/
+coverage/
+*.log
+
+iisnode/
+generated/
+public/po-files
+public/quotations
+public/po-files
+public/uploads
+public/annexures
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Environment files
+.env
+.env.local
+.env.*.local

@@ -1,0 +1,40 @@
+{
+  "features": [
+    {
+      "id": "approve_quotations",
+      "name": "Approve Quotations",
+      "description": "Ability to review and approve quotations",
+      "allowedRoles": [
+        "ext_vendor",
+        "ext_client"
+      ]
+    },
+    {
+      "id": "request_quotations",
+      "name": "Request Quotations",
+      "description": "Ability to create and submit quotation requests",
+      "allowedRoles": [
+        "ext_vendor",
+        "ext_partner",
+        "ext_client"
+      ]
+    },
+    {
+      "id": "view_company_data_only",
+      "name": "View Company Data Only",
+      "description": "Ability to view only data related to their own company",
+      "allowedRoles": [
+        "ext_partner"
+      ]
+    },
+    {
+      "id": "view_own_quotations_only",
+      "name": "View Own Quotations Only",
+      "description": "Ability to view only quotations created by or assigned to the user",
+      "allowedRoles": [
+        "ext_partner",
+        "ext_vendor"
+      ]
+    }
+  ]
+}
