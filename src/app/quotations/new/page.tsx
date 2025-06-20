@@ -24,7 +24,7 @@ import {
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useState, useEffect, useCallback, Suspense } from "react";
 import { FileUpload } from "@/components/ui/file-upload";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { X, Plus } from "lucide-react";
 import { addQuotation, updateQuotation, getQuotationRequestById, getQuotationById } from "@/lib/quotations";
@@ -42,6 +42,7 @@ interface Department {
   name: string;
   description: string;
 }
+
 
 const formSchema = z.object({
   company: z.string().min(1, "Company is required"),
@@ -79,9 +80,8 @@ type PreviewData = QuotationFormData & {
 
 function QuotationForm() {
   const router = useRouter();
-  const searchParams = useSearchParams();
-  const requestId = searchParams.get('requestId');
-  const encodedActionHistory = searchParams.get('actionHistory');
+  const [requestId, setRequestId] = useState<string | null>(null);
+  const [encodedActionHistory, setEncodedActionHistory] = useState<string | null>(null);
   const [items, setItems] = useState([{ id: "1", system: "", description: "", unit: "", qty: "", amount: "" }]);
   const [terms, setTerms] = useState([{ id: "1", content: "" }]);
   const [annexureFile, setAnnexureFile] = useState<File[]>([]);
@@ -206,6 +206,14 @@ function QuotationForm() {
     
     loadMyCompanies();
   }, [loadCompanies]);
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const params = new URLSearchParams(window.location.search);
+      setRequestId(params.get("requestId"));
+      setEncodedActionHistory(params.get("actionHistory"));
+    }
+  }, []);
 
   useEffect(() => {
     // Load request data if requestId is present
