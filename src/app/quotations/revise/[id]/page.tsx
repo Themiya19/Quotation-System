@@ -5,7 +5,7 @@ import { useRouter, useParams } from "next/navigation";
 import { useCompanyStore } from "@/lib/companies";
 import { toast } from "sonner";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
+import { useForm, useWatch } from "react-hook-form";
 import * as z from "zod";
 import { Button } from "@/components/ui/button";
 import {
@@ -29,7 +29,6 @@ import {
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { FileUpload } from "@/components/ui/file-upload";
 import { type Quotation, type QuotationStatus, type QuotationItem, type Term } from "@/types/quotation";
-import { generateAndSavePDF } from '@/lib/generateQuotationPdf';
 import { getQuotationById, addQuotation, updateQuotation } from "@/lib/quotations";
 import { saveAnnexureFile } from '@/lib/annexureUpload';
 import Cookies from "js-cookie";
@@ -58,6 +57,29 @@ function safeParseFloat(val: unknown): number {
   if (typeof val === "string") return parseFloat(val) || 0;
   if (typeof val === "number") return val;
   return 0;
+}
+
+function calculateTotals(items: QuotationItem[], discountType: string, discountValue: string, taxRate: string) {
+  const subtotal = items.reduce((sum, item) => {
+    const amount = safeParseFloat(item.amount);
+    const qty = safeParseFloat(item.qty);
+    return sum + (amount * qty);
+  }, 0);
+
+  let discountAmount = 0;
+  const discountVal = parseFloat(discountValue) || 0;
+  if (discountType === "percentage") {
+    discountAmount = (subtotal * discountVal) / 100;
+  } else {
+    discountAmount = discountVal;
+  }
+
+  const afterDiscount = subtotal - discountAmount;
+  const taxVal = parseFloat(taxRate) || 0;
+  const taxAmount = (afterDiscount * taxVal) / 100;
+  const total = afterDiscount + taxAmount;
+
+  return { subtotal, discount: discountAmount, tax: taxAmount, total };
 }
 
 export default function ReviseQuotationPage() {
@@ -103,6 +125,10 @@ export default function ReviseQuotationPage() {
       myCompany: "",
     },
   });
+
+  const discountType = useWatch({ control: form.control, name: "discountType" });
+  const discountValue = useWatch({ control: form.control, name: "discountValue" });
+  const taxRate = useWatch({ control: form.control, name: "taxRate" });
 
   useEffect(() => {
     async function loadQuotation() {
@@ -200,6 +226,35 @@ export default function ReviseQuotationPage() {
     loadMyCompanies();
   }, [params.id, router, form, loadCompanies]);
 
+  useEffect(() => {
+    const subtotal = items.reduce((sum, item) => {
+      const amount = safeParseFloat(item.amount);
+      const qty = safeParseFloat(item.qty);
+      return sum + (amount * qty);
+    }, 0);
+
+    const discountVal = parseFloat(discountValue ?? "") || 0;
+    const taxVal = parseFloat(taxRate ?? "") || 0;
+
+    let discountAmount = 0;
+    if (discountType === "percentage") {
+      discountAmount = (subtotal * discountVal) / 100;
+    } else {
+      discountAmount = discountVal;
+    }
+
+    const afterDiscount = subtotal - discountAmount;
+    const taxAmount = (afterDiscount * taxVal) / 100;
+    const total = afterDiscount + taxAmount;
+
+    setTotals({
+      subtotal,
+      discount: discountAmount,
+      tax: taxAmount,
+      total,
+    });
+  }, [items, discountType, discountValue, taxRate]);
+
   const addEmailTo = () => {
     if (!emailToInput || !emailToInput.includes('@')) {
       toast.error("Please enter a valid email address");
@@ -241,40 +296,6 @@ export default function ReviseQuotationPage() {
     const currentEmails = form.getValues("emailCC") || [];
     form.setValue("emailCC", currentEmails.filter(e => e !== email));
   };
-
-  useEffect(() => {
-    const subscription = form.watch((values) => {
-      const subtotal = items.reduce((sum, item) => {
-        const amount = safeParseFloat(item.amount);
-        const qty = safeParseFloat(item.qty);
-        return sum + (amount * qty);
-      }, 0);
-
-      const discountType = values.discountType;
-      const discountValue = parseFloat(values.discountValue ?? "") || 0;
-      const taxRate = parseFloat(values.taxRate ?? "") || 0;
-
-      let discountAmount = 0;
-      if (discountType === "percentage") {
-        discountAmount = (subtotal * discountValue) / 100;
-      } else {
-        discountAmount = discountValue;
-      }
-
-      const afterDiscount = subtotal - discountAmount;
-      const taxAmount = (afterDiscount * taxRate) / 100;
-      const total = afterDiscount + taxAmount;
-
-      setTotals({
-        subtotal,
-        discount: discountAmount,
-        tax: taxAmount,
-        total,
-      });
-    });
-
-    return () => subscription.unsubscribe();
-  }, [items, form]);
 
   const addItem = () => {
     setItems([...items, { id: Date.now().toString(), system: "", description: "", unit: "", qty: "", amount: "" } as QuotationItem]);
@@ -336,13 +357,21 @@ export default function ReviseQuotationPage() {
         ]
       });
 
+      // Calculate totals at submit time for best accuracy
+      const { total } = calculateTotals(
+        items,
+        values.discountType,
+        values.discountValue,
+        values.taxRate
+      );
+
       const newQuotationData = {
         quotationNo: newQuotationNo,
         date: new Date().toISOString().split('T')[0],
         company: values.company,
         project: values.project,
         title: values.title,
-        amount: totals.total,
+        amount: total,
         pdfUrl: "",
         annexureUrl: "",
         internalStatus: "pending" as QuotationStatus,
@@ -379,7 +408,12 @@ export default function ReviseQuotationPage() {
       }
 
       try {
-        const pdfUrl = await generateAndSavePDF(newQuotation);
+        const response = await fetch('/api/quotations/save-pdf', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(newQuotation),
+        });
+        const { url: pdfUrl } = await response.json();
 
         let annexureUrl = "";
         if (annexureFile.length > 0) {

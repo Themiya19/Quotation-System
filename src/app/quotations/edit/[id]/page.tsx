@@ -28,7 +28,6 @@ import {
 } from "@/components/ui/select";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { FileUpload } from "@/components/ui/file-upload";
-import { generateAndSavePDF } from '@/lib/generateQuotationPdf';
 import { type Quotation, type QuotationItem, type Term } from "@/types/quotation";
 import { getQuotationById, updateQuotation } from "@/lib/quotations";
 import { saveAnnexureFile } from '@/lib/annexureUpload';
@@ -401,7 +400,12 @@ export default function EditQuotationPage() {
 
       try {
         // Generate new PDF
-        const pdfUrl = await generateAndSavePDF(updatedQuotation);
+        const response = await fetch('/api/quotations/save-pdf', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(updatedQuotation),
+        });
+        const { url: pdfUrl } = await response.json();
         updatedQuotation.pdfUrl = pdfUrl;
 
         // Save annexure file if provided
