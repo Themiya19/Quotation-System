@@ -119,14 +119,14 @@ export async function POST(req: NextRequest) {
     const buffer = await doc.toBuffer();
 
     // Save the PDF to disk
-    const uploadDir = join(process.cwd(), "public", "uploads");
+    const uploadDir = join(process.cwd(), "uploads");
     await mkdir(uploadDir, { recursive: true });
     const filename = `quotation_${quotation.quotationNo || Date.now()}.pdf`;
     const filepath = join(uploadDir, filename);
     await writeFile(filepath, buffer);
 
     // Return the URL
-    return NextResponse.json({ url: `/uploads/${filename}` });
+    return NextResponse.json({ url: `/api/uploads/${filename}` });
   } catch (error) {
     console.error("Error generating PDF:", error);
     return NextResponse.json({ error: "Failed to generate PDF" }, { status: 500 });
