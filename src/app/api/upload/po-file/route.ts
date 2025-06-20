@@ -23,7 +23,7 @@ export async function POST(request: Request) {
     const fileName = `PO-${quotationId}-${timestamp}${fileExt}`;
     
     // Create the directory if it doesn't exist
-    const uploadDir = path.join(process.cwd(), 'public', 'po-files');
+    const uploadDir = path.join(process.cwd(), 'po-files');
     await mkdir(uploadDir, { recursive: true });
 
     const filePath = path.join(uploadDir, fileName);
@@ -33,8 +33,8 @@ export async function POST(request: Request) {
     const buffer = Buffer.from(bytes);
     await writeFile(filePath, buffer);
 
-    // Return the public URL
-    const fileUrl = `/po-files/${fileName}`;
+    // Return the API URL
+    const fileUrl = `/api/po-files/${fileName}`;
     return NextResponse.json({ fileUrl });
   } catch (error) {
     console.error('Error uploading PO file:', error);
