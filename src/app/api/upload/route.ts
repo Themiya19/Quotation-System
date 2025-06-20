@@ -16,7 +16,7 @@ export async function POST(request: NextRequest) {
     }
 
     const fileName = `${quotationNo}-Annexure.pdf`;
-    const uploadDir = path.join(process.cwd(), 'public', 'annexures');
+    const uploadDir = path.join(process.cwd(), 'annexures');
     const filePath = path.join(uploadDir, fileName);
 
     // Ensure upload directory exists
@@ -27,8 +27,8 @@ export async function POST(request: NextRequest) {
     const buffer = Buffer.from(bytes);
     await writeFile(filePath, buffer);
 
-    // Return the public URL
-    const publicUrl = `/annexures/${fileName}`;
+    // Return the API URL
+    const publicUrl = `/api/annexures/${fileName}`;
     return NextResponse.json({ url: publicUrl });
   } catch (error) {
     console.error('Error uploading file:', error);
