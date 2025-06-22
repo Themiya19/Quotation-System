@@ -879,10 +879,16 @@ export default function EditQuotationPage() {
                     />
                   </div>
                   <div className="col-span-4">
-                    <Input
+                    <Textarea
                       placeholder="Description"
                       value={item.description ?? ""}
-                      onChange={(e) => updateItem(item.id, "description", e.target.value)}
+                      onChange={(e) => {
+                        updateItem(item.id, "description", e.target.value);
+                        e.target.style.height = "auto";
+                        e.target.style.height = `${e.target.scrollHeight}px`;
+                      }}
+                      rows={1}
+                      style={{ resize: "none", minHeight: "38px" }}
                     />
                   </div>
                   <div className="col-span-1">

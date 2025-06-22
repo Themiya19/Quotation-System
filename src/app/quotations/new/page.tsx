@@ -1021,11 +1021,18 @@ function QuotationForm() {
                     />
                   </div>
                   <div className="col-span-4">
-                    <Input
-                      placeholder="Description"
-                      value={item.description}
-                      onChange={(e) => updateItem(item.id, "description", e.target.value)}
-                    />
+                  <Textarea
+                    placeholder="Description"
+                    value={item.description}
+                    onChange={(e) => {
+                      updateItem(item.id, "description", e.target.value);
+                      // Auto-resize logic
+                      e.target.style.height = "auto";
+                      e.target.style.height = `${e.target.scrollHeight}px`;
+                    }}
+                    rows={1}
+                    style={{ resize: "none", minHeight: "38px" }} // match Input height
+                  />
                   </div>
                   <div className="col-span-1">
                     <Input
