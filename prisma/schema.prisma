@@ -61,7 +61,7 @@ datasource db {
      id           Int      @id @default(autoincrement())
      quotationId  String
      system       String?
-     description  String?
+     description  String?  @db.Text
      unit         String?
      qty          String?
      amount       String?
@@ -71,7 +71,7 @@ datasource db {
    model Term {
      id           Int      @id @default(autoincrement())
      quotationId  String
-     content      String
+     content      String   @db.Text
      quotation    Quotation @relation(fields: [quotationId], references: [id])
    }
 
@@ -105,15 +105,15 @@ datasource db {
    }
 
    model User {
-  id           String   @id @default(cuid())
-  email        String   @unique
-  name         String
-  phoneNumber  String?
-  password     String
-  type         String
-  internalType String?
-  externalType String?
-  company      String?
-  department   String?
-  permissions  String?  // Store as JSON string if needed
-}
+     id           Int      @id @default(autoincrement())
+     email        String   @unique
+     name         String
+     phoneNumber  String?
+     password     String
+     type         String
+     internalType String?
+     externalType String?
+     company      String?
+     department   String?
+     permissions  String?  // Store as JSON string if needed
+   }

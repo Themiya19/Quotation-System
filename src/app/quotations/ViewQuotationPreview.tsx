@@ -364,7 +364,7 @@ export default function ViewQuotationPreview({
                     <div className="col-span-1">{index + 1}</div>
                     <div className="col-span-5">
                       <div className="text-gray-500">System: {item.system}</div>
-                      <div>{item.description}</div>
+                      <div className="break-words whitespace-pre-line max-w-md">{item.description}</div>
                     </div>
                     <div className="col-span-2 text-center font-medium">
                       {item.qty}{item.unit ? ` ${item.unit}` : ''}
@@ -413,7 +413,7 @@ export default function ViewQuotationPreview({
           <div className="border-t pt-6 mt-8">
             <h4 className="font-semibold mb-4">Terms and Conditions:</h4>
             {(quotation.terms || []).map((term, index) => (
-              <p key={term.id}>{index + 1}. {term.content}</p>
+              <p key={term.id} className="break-words whitespace-pre-line max-w-md">{index + 1}. {term.content}</p>
             ))}
           </div>
 
