@@ -275,15 +275,16 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    fontSize: 9,
+    fontSize: 8, // smaller font
     color: '#4A5568',
-    paddingTop: 8,
+    paddingTop: 4, // less padding
   },
   footerCompany: {
     flex: 1,
     textAlign: 'left',
-    fontSize: 9,
+    fontSize: 8, // smaller font
     color: '#4A5568',
+    // Remove line breaks, keep as one line
   },
   footerPage: {
     flex: 1,
@@ -315,8 +316,8 @@ const styles = StyleSheet.create({
             <View style={{ flexDirection: 'column', justifyContent: 'center', maxWidth: 220 }}>
               <Text style={styles.companyName}>{companyDetails?.name || "D S P Construction & Engineering Works (Pvt) Ltd."}</Text>
               <Text style={styles.companyDetails}>{companyDetails?.address || "No 15, Cross Street,"}</Text>
-              <Text style={styles.companyDetails}>{"Kandy."}</Text>
-              <Text style={styles.companyDetails}>{"Sri Lanka."}</Text>
+              {/* <Text style={styles.companyDetails}>{"Kandy."}</Text>
+              <Text style={styles.companyDetails}>{"Sri Lanka."}</Text> */}
               <Text style={styles.companyDetails}>Telephone: {companyDetails?.phoneNumber || "094812062863"}</Text>
             </View>
           </View>
@@ -460,10 +461,12 @@ const styles = StyleSheet.create({
       {/* Footer */}
       <View style={styles.footer} fixed>
         <Text style={styles.footerCompany}>
-          DSP Construction & Engineering Works (Pvt) Ltd. Tel: +94812062841{'\n'}
-          No. 15, Cross Street, Kandy.{'\n'}
-          Sri Lanka{'\n'}
-          Company reg No. PV 79650
+          {(companyDetails?.name || "D S P Construction & Engineering Works (Pvt) Ltd.")} | 
+          Tel: {(companyDetails?.phoneNumber || "094812062863")} | 
+          {(companyDetails?.address || "No 15, Cross Street, Kandy.")} | 
+          Sri Lanka
+          {/* Add registration number if available, or keep static if not in data */}
+          {/* {companyDetails?.regNo ? ` | Company reg No. ${companyDetails.regNo}` : " | Company reg No. PV 79650"} */}
         </Text>
         <Text
           style={styles.footerPage}
