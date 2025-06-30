@@ -54,6 +54,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginBottom: 8,
     color: '#1A365D', // Darker blue for company name
+    maxWidth: 220, 
   },
   companyDetails: {
     marginBottom: 3,
@@ -311,7 +312,7 @@ const styles = StyleSheet.create({
                 style={{ width: 80, height: 80, marginRight: 16 }}
               />
             )}
-            <View style={{ flexDirection: 'column', justifyContent: 'center' }}>
+            <View style={{ flexDirection: 'column', justifyContent: 'center', maxWidth: 220 }}>
               <Text style={styles.companyName}>{companyDetails?.name || "D S P Construction & Engineering Works (Pvt) Ltd."}</Text>
               <Text style={styles.companyDetails}>{companyDetails?.address || "No 15, Cross Street,"}</Text>
               <Text style={styles.companyDetails}>{"Kandy."}</Text>
