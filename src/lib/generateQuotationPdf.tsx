@@ -316,8 +316,6 @@ const styles = StyleSheet.create({
             <View style={{ flexDirection: 'column', justifyContent: 'center', maxWidth: 220 }}>
               <Text style={styles.companyName}>{companyDetails?.name || "D S P Construction & Engineering Works (Pvt) Ltd."}</Text>
               <Text style={styles.companyDetails}>{companyDetails?.address || "No 15, Cross Street,"}</Text>
-              {/* <Text style={styles.companyDetails}>{"Kandy."}</Text>
-              <Text style={styles.companyDetails}>{"Sri Lanka."}</Text> */}
               <Text style={styles.companyDetails}>Telephone: {companyDetails?.phoneNumber || "094812062863"}</Text>
             </View>
           </View>
