@@ -53,12 +53,12 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: 'bold',
     marginBottom: 8,
-    color: '#1A365D', // Darker blue for company name
+    color: '#1A365D', 
     maxWidth: 220, 
   },
   companyDetails: {
     marginBottom: 3,
-    color: '#4A5568', // Slightly lighter text for details
+    color: '#4A5568', 
   },
   quotationTitle: {
     fontSize: 20,
