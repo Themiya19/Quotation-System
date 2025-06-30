@@ -284,7 +284,6 @@ const styles = StyleSheet.create({
     textAlign: 'left',
     fontSize: 8, // smaller font
     color: '#4A5568',
-    // Remove line breaks, keep as one line
   },
   footerPage: {
     flex: 1,
