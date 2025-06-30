@@ -70,6 +70,53 @@ export default function MyCompanies() {
     },
   });
 
+  async function resizeImage(file: File, maxWidth = 256, maxHeight = 256): Promise<File> {
+    return new Promise((resolve, reject) => {
+      const img = new window.Image();
+      const url = URL.createObjectURL(file);
+  
+      img.onload = () => {
+        const { width, height } = img;
+        let newWidth = width;
+        let newHeight = height;
+  
+        // Calculate new dimensions
+        if (width > maxWidth || height > maxHeight) {
+          const aspectRatio = width / height;
+          if (width > height) {
+            newWidth = maxWidth;
+            newHeight = Math.round(maxWidth / aspectRatio);
+          } else {
+            newHeight = maxHeight;
+            newWidth = Math.round(maxHeight * aspectRatio);
+          }
+        }
+  
+        const canvas = document.createElement('canvas');
+        canvas.width = newWidth;
+        canvas.height = newHeight;
+        const ctx = canvas.getContext('2d');
+        if (!ctx) return reject(new Error('Canvas not supported'));
+  
+        ctx.drawImage(img, 0, 0, newWidth, newHeight);
+  
+        canvas.toBlob(
+          (blob) => {
+            if (!blob) return reject(new Error('Resize failed'));
+            const resizedFile = new File([blob], file.name, { type: file.type });
+            resolve(resizedFile);
+          },
+          file.type,
+          0.92 // quality
+        );
+        URL.revokeObjectURL(url);
+      };
+  
+      img.onerror = reject;
+      img.src = url;
+    });
+  }
+
   // Check permission to manage my company
   useEffect(() => {
     const checkPermissions = async () => {
@@ -274,12 +321,45 @@ export default function MyCompanies() {
     }
   };
 
-  const handleFileSelected = (files: File[]) => {
-    if (files.length > 0) {
-      setSelectedFile(files[0]);
+  // const handleFileSelected = (files: File[]) => {
+  //   if (files.length > 0) {
+  //     setSelectedFile(files[0]);
       
+  //     // Create a preview URL for the selected file
+  //     const filePreviewUrl = URL.createObjectURL(files[0]);
+  //     setLogoPreview(filePreviewUrl);
+  //   }
+  // };
+
+  const handleFileSelected = async (files: File[]) => {
+    if (files.length > 0) {
+      let file = files[0];
+  
+      // Only resize if it's an image
+      if (file.type.startsWith('image/')) {
+        try {
+          // Resize if larger than 256x256 or >2MB
+          const img = new window.Image();
+          img.src = URL.createObjectURL(file);
+          await new Promise((res, rej) => {
+            img.onload = res;
+            img.onerror = rej;
+          });
+  
+          if (img.width > 256 || img.height > 256 || file.size > 2 * 1024 * 1024) {
+            file = await resizeImage(file, 256, 256);
+          }
+          URL.revokeObjectURL(img.src);
+        } catch (err) {
+          console.error('Image resize failed:', err);
+          // Optionally show a toast error here
+        }
+      }
+  
+      setSelectedFile(file);
+  
       // Create a preview URL for the selected file
-      const filePreviewUrl = URL.createObjectURL(files[0]);
+      const filePreviewUrl = URL.createObjectURL(file);
       setLogoPreview(filePreviewUrl);
     }
   };
@@ -324,6 +404,7 @@ export default function MyCompanies() {
                         alt={`${company.name} logo`}
                         fill
                         className="object-contain"
+                        unoptimized
                       />
                     </div>
                   ) : (
@@ -477,6 +558,7 @@ export default function MyCompanies() {
                         alt="Logo preview" 
                         fill
                         className="object-contain"
+                        unoptimized
                       />
                     </div>
                   )}
