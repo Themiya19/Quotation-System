@@ -10,6 +10,8 @@ export interface Company {
   emailCC?: string[] | string;
   address?: string;
   attention?: string;
+  phoneNumber?: string; // <-- Add this line
+
 }
 
 export interface CompanyStore {

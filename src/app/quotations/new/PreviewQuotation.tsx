@@ -57,10 +57,10 @@ export default function PreviewQuotation({
               <p className="text-gray-600">
                 {selectedMyCompany?.address || "No 15, Cross Street,"}
               </p>
-              <p className="text-gray-600">Kandy.</p>
-              <p className="text-gray-600">Sri Lanka.</p>
+              {/* <p className="text-gray-600">Kandy.</p>
+              <p className="text-gray-600">Sri Lanka.</p> */}
               <p className="text-gray-600">
-                Telephone: {"094812062863"}
+                Telephone: {selectedMyCompany?.phoneNumber}
               </p>
             </div>
             <div className="text-right">

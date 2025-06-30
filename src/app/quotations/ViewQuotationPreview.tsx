@@ -299,8 +299,8 @@ export default function ViewQuotationPreview({
               <p className="text-gray-600">
                 {myCompany?.address || "No 15, Cross Street,"}
               </p>
-              <p className="text-gray-600">Kandy.</p>
-              <p className="text-gray-600">Sri Lanka.</p>
+              {/* <p className="text-gray-600">Kandy.</p>
+              <p className="text-gray-600">Sri Lanka.</p> */}
               <p className="text-gray-600">
                 Telephone: {
                   myCompany && (myCompany as CompanyWithPhone).phoneNumber
