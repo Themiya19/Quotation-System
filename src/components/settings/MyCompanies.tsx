@@ -185,6 +185,8 @@ export default function MyCompanies() {
         const formData = new FormData();
         formData.append('file', selectedFile);
         formData.append('type', 'logo');
+        // Pass the old logo URL for deletion
+        formData.append('oldLogoUrl', selectedCompany?.logoUrl || '');
         
         const response = await fetch('/api/company-upload', {
           method: 'POST',
@@ -213,12 +215,10 @@ export default function MyCompanies() {
       let updatedCompanies: CompanyDetails[];
       
       if (isEditing && selectedCompany) {
-        // Update existing company
         updatedCompanies = companies.map(company => 
           company.id === selectedCompany.id ? companyData : company
         );
       } else {
-        // Add new company
         updatedCompanies = [...companies, companyData];
       }
       

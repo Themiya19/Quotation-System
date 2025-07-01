@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { writeFile, mkdir } from 'fs/promises';
+import { writeFile, mkdir, unlink } from 'fs/promises';
 import path from 'path';
 
 export async function POST(request: Request) {
@@ -7,12 +7,23 @@ export async function POST(request: Request) {
     const formData = await request.formData();
     const file = formData.get('file') as File;
     const type = formData.get('type') as string;
+    const oldLogoUrl = formData.get('oldLogoUrl') as string | null;
 
     if (!file || !type) {
       return NextResponse.json(
         { error: 'File and type are required' },
         { status: 400 }
       );
+    }
+
+    // Delete old logo if provided
+    if (oldLogoUrl && typeof oldLogoUrl === 'string' && oldLogoUrl.trim() !== '') {
+      const oldFilePath = path.join(process.cwd(), 'public', oldLogoUrl.replace(/^\//, ''));
+      try {
+        await unlink(oldFilePath);
+      } catch {
+        // Ignore if file doesn't exist
+      }
     }
 
     // Create the directory if it doesn't exist
