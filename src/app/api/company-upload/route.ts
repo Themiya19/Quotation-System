@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { writeFile, mkdir, unlink } from 'fs/promises';
+import { writeFile, mkdir } from 'fs/promises';
 import path from 'path';
 
 export async function POST(request: Request) {
@@ -7,36 +7,25 @@ export async function POST(request: Request) {
     const formData = await request.formData();
     const file = formData.get('file') as File;
     const type = formData.get('type') as string;
-    const oldLogoUrl = formData.get('oldLogoUrl') as string | null;
+    const companyId = formData.get('companyId') as string | null;
 
-    if (!file || !type) {
+    if (!file || !type || !companyId) {
       return NextResponse.json(
-        { error: 'File and type are required' },
+        { error: 'File, type, and companyId are required' },
         { status: 400 }
       );
-    }
-
-    // Delete old logo if provided
-    if (oldLogoUrl && typeof oldLogoUrl === 'string' && oldLogoUrl.trim() !== '') {
-      const oldFilePath = path.join(process.cwd(), 'public', oldLogoUrl.replace(/^\//, ''));
-      try {
-        await unlink(oldFilePath);
-      } catch {
-        // Ignore if file doesn't exist
-      }
     }
 
     // Create the directory if it doesn't exist
     const uploadDir = path.join(process.cwd(), 'public', 'company-logos');
     await mkdir(uploadDir, { recursive: true });
 
-    // Generate a unique filename
+    // Use companyId for the filename
     const fileExtension = file.name.split('.').pop();
-    const uniqueId = Date.now().toString();
-    const fileName = `company-logo-${uniqueId}.${fileExtension}`;
+    const fileName = `company-${companyId}.${fileExtension}`;
     const filePath = path.join(uploadDir, fileName);
 
-    // Convert File to Buffer and save
+    // Convert File to Buffer and save (overwrite if exists)
     const bytes = await file.arrayBuffer();
     const buffer = Buffer.from(bytes);
     await writeFile(filePath, buffer);

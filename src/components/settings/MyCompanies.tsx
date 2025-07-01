@@ -178,6 +178,8 @@ export default function MyCompanies() {
     }
 
     try {
+      // Use existing company id or generate a new one
+      const companyId = selectedCompany?.id || Date.now().toString();
       let logoUrl = selectedCompany?.logoUrl || "";
       
       // Handle logo upload if file is selected
@@ -185,8 +187,7 @@ export default function MyCompanies() {
         const formData = new FormData();
         formData.append('file', selectedFile);
         formData.append('type', 'logo');
-        // Pass the old logo URL for deletion
-        formData.append('oldLogoUrl', selectedCompany?.logoUrl || '');
+        formData.append('companyId', companyId);
         
         const response = await fetch('/api/company-upload', {
           method: 'POST',
@@ -203,7 +204,7 @@ export default function MyCompanies() {
       
       // Create new company details object
       const companyData: CompanyDetails = {
-        id: selectedCompany?.id || Date.now().toString(),
+        id: companyId,
         name: values.name,
         shortName: values.shortName || undefined,
         address: values.address,
