@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import pool from '@/lib/prisma';
 import { type Quotation } from '@/types/quotation';
 import { cookies } from 'next/headers';
+import { toMySQLDateTime } from '@/lib/utils';
 
 // Helper function to generate quotation number
 function generateQuotationId(quotations: Quotation[]): string {
@@ -53,7 +54,7 @@ export async function POST(req: Request) {
       [
         quotationId,
         quotationNo,
-        new Date().toISOString().split('T')[0],
+        toMySQLDateTime(data.date || new Date()),
         data.company,
         data.myCompany || null,
         data.project,
@@ -69,7 +70,7 @@ export async function POST(req: Request) {
         data.salesperson || null,
         data.customerReferences || null,
         data.paymentTerms || null,
-        data.dueDate || null,
+        data.dueDate ? toMySQLDateTime(data.dueDate) : null,
         data.discountType,
         data.discountValue,
         data.taxRate,
@@ -84,7 +85,7 @@ export async function POST(req: Request) {
         data.forDepartment || null,
         data.status || null,
         data.isRequested || null,
-        data.clientApprovalDate || null,
+        data.clientApprovalDate ? toMySQLDateTime(data.clientApprovalDate) : null,
         data.poNumber || null,
         data.poFile || null,
         data.requestId || null
@@ -153,6 +154,16 @@ export async function PATCH(request: Request) {
   const { items, terms, actionHistory, ...quotationUpdates } = updates;
   // Remove non-column properties
   delete quotationUpdates.success;
+  // Format date fields if present
+  if (quotationUpdates.date) {
+    quotationUpdates.date = toMySQLDateTime(quotationUpdates.date);
+  }
+  if (quotationUpdates.dueDate) {
+    quotationUpdates.dueDate = toMySQLDateTime(quotationUpdates.dueDate);
+  }
+  if (quotationUpdates.clientApprovalDate) {
+    quotationUpdates.clientApprovalDate = toMySQLDateTime(quotationUpdates.clientApprovalDate);
+  }
   // Update the quotation in the database (do not update actionHistory)
   await pool.query(
     'UPDATE Quotation SET ? WHERE id = ?',
