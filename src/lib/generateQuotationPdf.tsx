@@ -322,7 +322,9 @@ const styles = StyleSheet.create({
         <View style={styles.headerRight}>
           <Text style={styles.quotationTitle}>Quotation</Text>
           <Text style={styles.quotationDetails}>Quote No. {quotation.quotationNo}</Text>
-          <Text style={styles.quotationDetails}>{quotation.date}</Text>
+          <Text style={styles.quotationDetails}>
+            {quotation.date ? new Date(quotation.date).toLocaleDateString() : ""}
+          </Text>
         </View>
       </View>
 

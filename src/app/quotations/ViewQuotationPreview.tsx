@@ -252,7 +252,11 @@ export default function ViewQuotationPreview({
                     </div>
                     <div className="grid grid-cols-2 gap-2">
                       <div className="font-medium">Request Date:</div>
-                      <div>{requestData.date}</div>
+                      <div>
+                        {requestData.date
+                          ? new Date(requestData.date).toLocaleDateString()
+                          : ""}
+                      </div>
                     </div>
                   </div>
                 </div>
