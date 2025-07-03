@@ -25,6 +25,12 @@ interface ViewQuotationPreviewProps {
 // Extend Company to allow for phoneNumber if present
 type CompanyWithPhone = Company & { phoneNumber?: string };
 
+type RequestActionHistoryEntry = {
+  id: number;
+  action: string;
+  createdAt: string;
+};
+
 export default function ViewQuotationPreview({
   quotation,
   companies,
@@ -36,6 +42,7 @@ export default function ViewQuotationPreview({
   const selectedCompany = companies.find(c => c.id === quotation.company);
   const [userDepartment, setUserDepartment] = useState<string | undefined>(quotation.createdByDepartment);
   const [myCompany, setMyCompany] = useState<Company | null>(null);
+  const [requestActionHistory, setRequestActionHistory] = useState<RequestActionHistoryEntry[]>([]);
 
   // Check if this is a requested quotation based on the action history
   const isRequestedQuotation = requestData || quotation.actionHistory.some(action => 
@@ -83,6 +90,23 @@ export default function ViewQuotationPreview({
       fetchMyCompany();
     }
   }, [quotation.myCompany, myCompanies]);
+
+  useEffect(() => {
+    const fetchRequestActionHistory = async () => {
+      if (requestData?.id) {
+        try {
+          const res = await fetch(`/api/quotation-requests/${requestData.id}/action-history`);
+          if (res.ok) {
+            const data = await res.json();
+            setRequestActionHistory(data);
+          }
+        } catch {
+          // Optionally handle error
+        }
+      }
+    };
+    fetchRequestActionHistory();
+  }, [requestData?.id]);
 
   // Helper function to get status color based on status
   // const getStatusColor = (status: string) => {
@@ -440,16 +464,33 @@ export default function ViewQuotationPreview({
       </Card>
 
       {/* Action History Section */}
-      {quotation.actionHistory && quotation.actionHistory.length > 0 && (
+      {(isRequestedQuotation || (quotation.actionHistory && quotation.actionHistory.length > 0)) && (
         <Card className="mt-6">
           <CardHeader>
             <CardTitle>Action History</CardTitle>
           </CardHeader>
           <CardContent>
             <ol className="list-decimal pl-5 space-y-1 text-sm text-gray-700">
-              {quotation.actionHistory.map((entry, idx) => (
-                <li key={idx}>{entry}</li>
-              ))}
+              {/* Show the first 'Requested by ...' action if this is a requested quotation */}
+              {isRequestedQuotation && requestActionHistory.length > 0 && (() => {
+                const requestedAction = requestActionHistory.find(entry => entry.action.toLowerCase().includes('requested by'));
+                return requestedAction ? (
+                  <li key={requestedAction.id}>{requestedAction.action}</li>
+                ) : null;
+              })()}
+              {/* Show the rest of the quotation.actionHistory entries, skipping any that match the requestedAction */}
+              {quotation.actionHistory && quotation.actionHistory
+                .filter(action => {
+                  // If we already showed the requestedAction, skip it here
+                  if (isRequestedQuotation && requestActionHistory.length > 0) {
+                    const requestedAction = requestActionHistory.find(entry => entry.action.toLowerCase().includes('requested by'));
+                    return !requestedAction || action !== requestedAction.action;
+                  }
+                  return true;
+                })
+                .map((entry, idx) => (
+                  <li key={idx + '-action'}>{entry}</li>
+                ))}
             </ol>
           </CardContent>
         </Card>
