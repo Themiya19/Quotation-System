@@ -22,7 +22,7 @@ interface QuotationRequest {
 }
 
 // Define the type for the count row returned from the database
-type CountRow = { count: number };
+// type CountRow = { count: number };
 
 export async function GET() {
   try {
@@ -56,11 +56,22 @@ export async function GET() {
 export async function POST(request: Request) {
   try {
     const data = await request.json();
-    // Generate new ID in format RQYYYYMMDD-n
+    // Generate new ID in format RQYYYYMMDD-n (find max n, not just count)
     const todayPrefix = getTodayIdPrefix();
-    const [rows] = await pool.query('SELECT COUNT(*) as count FROM quotationRequest WHERE id LIKE ?', [`${todayPrefix}%`]);
-    const todayCount = (rows as CountRow[])[0]?.count || 0;
-    const newId = `${todayPrefix}${todayCount + 1}`;
+    const [rows] = await pool.query(
+      "SELECT id FROM quotationRequest WHERE id LIKE ? ORDER BY CAST(SUBSTRING_INDEX(id, '-', -1) AS UNSIGNED) DESC LIMIT 1",
+      [`${todayPrefix}%`]
+    );
+    let nextNumber = 1;
+    if (Array.isArray(rows) && rows.length > 0) {
+      // Extract the last number from the ID, e.g., RQ20250703-9 => 9
+      const lastId = (rows as { id: string }[])[0].id;
+      const match = lastId.match(/-(\d+)$/);
+      if (match) {
+        nextNumber = parseInt(match[1], 10) + 1;
+      }
+    }
+    const newId = `${todayPrefix}${nextNumber}`;
     // Add user email to action history if provided
     if (data.userEmail && data.actionHistory && data.actionHistory.length > 0) {
       const firstAction = data.actionHistory[0];

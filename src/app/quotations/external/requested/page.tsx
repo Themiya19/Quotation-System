@@ -244,8 +244,15 @@ export default function RequestedQuotationsPage() {
       );
     }
 
-    // Sort to show most recent quotations first (like the internal table)
-    filtered = filtered.reverse();
+    // Sort quotations by numeric part of ID (descending)
+    filtered = filtered.sort((a, b) => {
+      const getNum = (id: string | undefined) => {
+        const safeId = id || "";
+        const match = safeId.match(/-(\d+)$/);
+        return match ? parseInt(match[1], 10) : 0;
+      };
+      return getNum(b.id) - getNum(a.id);
+    });
 
     setFilteredQuotations(filtered);
   }, [quotations, searchQuery, statusFilter, yearFilter, companyFilter]);

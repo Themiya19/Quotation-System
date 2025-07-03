@@ -110,7 +110,17 @@ export function RequestedQuotationsTable({
     }
   }, [companies, loadCompanies]);
 
-  const filteredQuotations = allQuotations.filter((quotation) => {
+  // Sort quotations by numeric part of ID (descending)
+  const sortedQuotations = allQuotations.slice().sort((a, b) => {
+    const getNum = (id: string | undefined) => {
+      const safeId = id || "";
+      const match = safeId.match(/-(\d+)$/);
+      return match ? parseInt(match[1], 10) : 0;
+    };
+    return getNum(b.id) - getNum(a.id);
+  });
+
+  const filteredQuotations = sortedQuotations.filter((quotation) => {
     const matchesSearch =
       searchQuery === "" ||
       quotation.customerName.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -122,7 +132,7 @@ export function RequestedQuotationsTable({
       yearFilter === "all" || quotation.date.split('-')[0] === yearFilter;
 
     return matchesSearch && matchesYear;
-  }).reverse();
+  });
 
   const totalPages = Math.ceil(filteredQuotations.length / ITEMS_PER_PAGE);
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
