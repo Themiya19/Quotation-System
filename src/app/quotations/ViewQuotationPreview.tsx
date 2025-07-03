@@ -254,7 +254,11 @@ export default function ViewQuotationPreview({
                       <div className="font-medium">Request Date:</div>
                       <div>
                         {requestData.date
-                          ? new Date(requestData.date).toLocaleDateString()
+                          ? new Date(requestData.date).toLocaleDateString('en-GB', { 
+                              day: '2-digit', 
+                              month: '2-digit', 
+                              year: 'numeric' 
+                            })
                           : ""}
                       </div>
                     </div>
@@ -348,7 +352,11 @@ export default function ViewQuotationPreview({
               <div>{quotation.salesperson}</div>
               <div>{quotation.customerReferences}</div>
               <div>{quotation.paymentTerms}</div>
-              <div>{quotation.dueDate}</div>
+              <div>
+                {quotation.dueDate
+                  ? new Date(quotation.dueDate).toLocaleDateString()
+                  : ""}
+              </div>
             </div>
           </div>
 

@@ -98,7 +98,11 @@ export default function PreviewQuotation({
               <div>{previewData.salesperson}</div>
               <div>{previewData.customerReferences}</div>
               <div>{previewData.paymentTerms}</div>
-              <div>{previewData.dueDate}</div>
+              <div>
+                {previewData.dueDate
+                  ? new Date(previewData.dueDate).toLocaleDateString()
+                  : ""}
+              </div>
             </div>
           </div>
 
