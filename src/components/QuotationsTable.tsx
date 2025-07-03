@@ -55,7 +55,7 @@ export function QuotationsTable({
           {quotations.map((quotation) => (
             <TableRow key={quotation.id}>
               <TableCell>{quotation.id}</TableCell>
-              <TableCell>{quotation.date}</TableCell>
+              <TableCell>{quotation.date ? new Date(quotation.date).toLocaleDateString() : ""}</TableCell>
               <TableCell>{quotation.customerName}</TableCell>
               <TableCell>{getCompanyName(quotation.company)}</TableCell>
               <TableCell>{quotation.project}</TableCell>

@@ -404,7 +404,7 @@ export default function MyExternalQuotationsPage() {
                       {paginatedQuotations.map((quotation) => (
                         <TableRow key={quotation.id}>
                           <TableCell>{quotation.quotationNo}</TableCell>
-                          <TableCell>{quotation.date}</TableCell>
+                          <TableCell>{quotation.date ? new Date(quotation.date).toLocaleDateString() : ""}</TableCell>
                           <TableCell>{quotation.project}</TableCell>
                           <TableCell>{quotation.title}</TableCell>
                           <TableCell className="text-right">
@@ -578,7 +578,7 @@ export default function MyExternalQuotationsPage() {
                   {paginatedQuotations.map((quotation) => (
                     <TableRow key={quotation.id}>
                       <TableCell>{quotation.quotationNo}</TableCell>
-                      <TableCell>{quotation.date}</TableCell>
+                      <TableCell>{quotation.date ? new Date(quotation.date).toLocaleDateString() : ""}</TableCell>
                       <TableCell>{quotation.project}</TableCell>
                       <TableCell>{quotation.title}</TableCell>
                       <TableCell className="text-right">

@@ -93,7 +93,7 @@ export default function ExternalQuotationRequestPage() {
         description: values.description,
         company: values.company,
         date: new Date().toLocaleString(),
-        actionHistory: [`Requested by ${values.name} (${selectedCompany.name}, ${userEmail}) on ${new Date().toLocaleString()}`],
+        actionHistory: [`Requested by ${values.name} (${userEmail}) on ${new Date().toLocaleString()}`],
         status: 'pending' as const,
         userEmail: userEmail // Add user's email to the quotation request
       };
