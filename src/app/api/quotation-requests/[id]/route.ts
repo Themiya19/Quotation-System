@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import pool from '@/lib/prisma';
+import { toMySQLDateTime } from '@/lib/utils';
 
 // Define the type for a quotation request row
 interface QuotationRequestRow {
@@ -60,6 +61,10 @@ export async function PATCH(
     const body = await request.json();
     // Update main fields (except actionHistory)
     const { actionHistory, ...fields } = body;
+    // Format date if present
+    if (fields.date) {
+      fields.date = toMySQLDateTime(fields.date);
+    }
     // Build SET clause and values for update
     const setClause = Object.keys(fields).map(key => `${key} = ?`).join(', ');
     const values = Object.values(fields);

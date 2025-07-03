@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import pool from '@/lib/prisma';
+import { toMySQLDateTime } from '@/lib/utils';
 
 function getTodayIdPrefix() {
   const today = new Date();
@@ -81,13 +82,10 @@ export async function POST(request: Request) {
         data.actionHistory[0] = `Requested by ${data.customerName} (${data.userEmail}) on ${now.toLocaleString()}`;
       }
     }
-    // Ensure date is in MySQL DATE format (YYYY-MM-DD)
+    // Ensure date is in MySQL DATETIME format (YYYY-MM-DD HH:MM:SS)
     let mysqlDate = data.date;
     if (data.date) {
-      const d = new Date(data.date);
-      if (!isNaN(d.getTime())) {
-        mysqlDate = d.toISOString().split('T')[0];
-      }
+      mysqlDate = toMySQLDateTime(data.date);
     }
     // Insert the request
     await pool.query(
