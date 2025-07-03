@@ -17,7 +17,6 @@ interface QuotationRequest {
   status: string;
   actionHistory: string[];
   description?: string;
-  [key: string]: any;
 }
 
 export default function RequestedQuotationPreviewPage() {
