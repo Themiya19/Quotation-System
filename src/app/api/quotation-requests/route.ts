@@ -67,7 +67,7 @@ export async function POST(request: Request) {
       if (firstAction.includes('Requested by')) {
         // Replace the date part with date and time
         const now = new Date();
-        data.actionHistory[0] = `Requested by ${data.customerName} (${data.company}, ${data.userEmail}) on ${now.toLocaleString()}`;
+        data.actionHistory[0] = `Requested by ${data.customerName} (${data.userEmail}) on ${now.toLocaleString()}`;
       }
     }
     // Ensure date is in MySQL DATE format (YYYY-MM-DD)
