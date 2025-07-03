@@ -22,6 +22,7 @@ import {
   PaginationPrevious,
 } from "@/components/ui/pagination";
 import { useCompanyStore } from "@/lib/companies";
+import { useRouter } from "next/navigation";
 
 interface RequestedQuotationsTableProps {
   quotations: QuotationRequest[];
@@ -80,6 +81,9 @@ export function RequestedQuotationsTable({
   const [searchQuery, setSearchQuery] = useState("");
   const [yearFilter, setYearFilter] = useState<string>(new Date().getFullYear().toString());
   const { companies, loadCompanies, isLoading: companiesLoading } = useCompanyStore();
+  const [cursorPosition, setCursorPosition] = useState({ x: 0, y: 0 });
+  const [showTooltip, setShowTooltip] = useState(false);
+  const router = useRouter();
 
   // Function to get company name from ID
   const getCompanyName = useCallback((companyName: string) => {
@@ -127,6 +131,18 @@ export function RequestedQuotationsTable({
     startIndex + ITEMS_PER_PAGE
   );
 
+  // Function to handle row click
+  const handleRowClick = (quotationId: string) => {
+    router.push(`/quotations/requested/preview/${quotationId}`);
+  };
+  // Handle mouse move to track cursor position
+  const handleMouseMove = (e: React.MouseEvent) => {
+    setCursorPosition({ x: e.clientX, y: e.clientY });
+  };
+  // Handle mouse enter/leave for tooltip visibility
+  const handleMouseEnter = () => setShowTooltip(true);
+  const handleMouseLeave = () => setShowTooltip(false);
+
   if (isLoading) {
     return (
       <div className="flex justify-center items-center p-8">
@@ -167,7 +183,19 @@ export function RequestedQuotationsTable({
               </TableRow>
             ) : (
               paginatedQuotations.map((quotation) => (
-                <TableRow key={quotation.id}>
+                <TableRow
+                  key={quotation.id}
+                  className="cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-800"
+                  onClick={(e) => {
+                    // Only navigate if the click is not on an interactive element
+                    if (!(e.target as HTMLElement).closest('button, a, [role="button"]')) {
+                      handleRowClick(quotation.id ?? "");
+                    }
+                  }}
+                  onMouseMove={handleMouseMove}
+                  onMouseEnter={handleMouseEnter}
+                  onMouseLeave={handleMouseLeave}
+                >
                   <TableCell>{quotation.id}</TableCell>
                   <TableCell>{quotation.date}</TableCell>
                   <TableCell>{quotation.customerName}</TableCell>
@@ -198,7 +226,7 @@ export function RequestedQuotationsTable({
                         <>
                           <Button
                             size="sm"
-                            onClick={() => onCreateQuotation(quotation)}
+                            onClick={(e) => { e.stopPropagation(); onCreateQuotation(quotation); }}
                             className="bg-green-100 hover:bg-green-200 text-green-700"
                           >
                             Create Quotation
@@ -206,7 +234,7 @@ export function RequestedQuotationsTable({
                           <Button
                             size="sm"
                             variant="outline"
-                            onClick={() => onReject(quotation)}
+                            onClick={(e) => { e.stopPropagation(); onReject(quotation); }}
                             className="bg-red-100 hover:bg-red-200 text-red-700"
                           >
                             Reject
@@ -239,7 +267,19 @@ export function RequestedQuotationsTable({
           </TableBody>
         </Table>
       </div>
-
+      {showTooltip && (
+        <div
+          className="fixed bg-white text-slate-700 text-xs rounded-md px-3 py-2 whitespace-nowrap pointer-events-none z-50 shadow-md border border-slate-200 font-medium animate-in fade-in duration-200"
+          style={{
+            left: `${cursorPosition.x + 10}px`,
+            top: `${cursorPosition.y - 40}px`,
+            transform: "translateZ(0)",
+          }}
+        >
+          Click to view the Preview
+          <div className="absolute h-2 w-2 bg-white border-b border-r border-slate-200 rotate-45 left-2 -bottom-1"></div>
+        </div>
+      )}
       {totalPages > 1 && (
         <Pagination>
           <PaginationContent>
