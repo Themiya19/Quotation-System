@@ -233,7 +233,7 @@ export default function InternalRequestedQuotationsPage() {
           status: 'rejected',
           actionHistory: [
             ...quotation.actionHistory,
-            `Rejected on ${new Date().toISOString().split('T')[0]}`
+            `Rejected on ${new Date().toLocaleString()}`
           ]
         }),
       });
@@ -251,7 +251,7 @@ export default function InternalRequestedQuotationsPage() {
                 status: 'rejected',
                 actionHistory: [
                   ...q.actionHistory,
-                  `Rejected on ${new Date().toISOString().split('T')[0]}`
+                  `Rejected on ${new Date().toLocaleString()}`
                 ]
               }
             : q

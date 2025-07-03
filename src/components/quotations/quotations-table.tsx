@@ -290,7 +290,7 @@ export function QuotationsTable({
 								onMouseLeave={handleMouseLeave}
 							>
 								<TableCell className="font-medium">{quotation.quotationNo}</TableCell>
-								<TableCell>{quotation.date}</TableCell>
+								<TableCell>{quotation.date ? new Date(quotation.date).toLocaleDateString() : ""}</TableCell>
 								<TableCell>{getCompanyName(quotation.myCompany || "", true)}</TableCell>
 								<TableCell>{getCompanyName(quotation.company)}</TableCell>
 								<TableCell>{quotation.project}</TableCell>

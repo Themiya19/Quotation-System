@@ -353,7 +353,7 @@ export default function ReviseQuotationPage() {
         internalStatus: "revised" as QuotationStatus,
         actionHistory: [
           ...quotation.actionHistory,
-          `Revised on ${new Date().toISOString().split('T')[0]}`
+          `Revised on ${new Date().toLocaleString()}`
         ]
       });
 
@@ -367,7 +367,7 @@ export default function ReviseQuotationPage() {
 
       const newQuotationData = {
         quotationNo: newQuotationNo,
-        date: new Date().toISOString().split('T')[0],
+        date: new Date().toLocaleString(),
         company: values.company,
         project: values.project,
         title: values.title,
@@ -377,7 +377,7 @@ export default function ReviseQuotationPage() {
         internalStatus: "pending" as QuotationStatus,
         externalStatus: "Pending Review",
         actionHistory: [
-          `Created as revision of ${quotation.quotationNo} on ${new Date().toISOString().split("T")[0]}`,
+          `Created as revision of ${quotation.quotationNo} on ${new Date().toLocaleString()}`,
         ],
         items,
         terms,
@@ -447,7 +447,7 @@ export default function ReviseQuotationPage() {
           annexureUrl: "",
           actionHistory: [
             ...quotation.actionHistory,
-            `Annexure removed on ${new Date().toISOString().split('T')[0]}`
+            `Annexure removed on ${new Date().toLocaleString()}`
           ]
         };
 

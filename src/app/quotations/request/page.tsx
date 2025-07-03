@@ -122,7 +122,7 @@ export default function MyQuotationRequestsPage() {
           status: 'rejected',
           actionHistory: [
             ...quotation.actionHistory,
-            `Rejected on ${new Date().toISOString().split('T')[0]}`
+            `Rejected on ${new Date().toLocaleString()}`
           ]
         }),
       });
@@ -140,7 +140,7 @@ export default function MyQuotationRequestsPage() {
                 status: 'rejected',
                 actionHistory: [
                   ...q.actionHistory,
-                  `Rejected on ${new Date().toISOString().split('T')[0]}`
+                  `Rejected on ${new Date().toLocaleString()}`
                 ]
               }
             : q

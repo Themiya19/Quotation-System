@@ -99,7 +99,7 @@ export default function RequestedQuotationPreviewPage() {
           </div>
           <div>
             <div className="text-muted-foreground text-xs">Date</div>
-            <div>{quotation.date}</div>
+            <div>{quotation.date ? new Date(quotation.date).toLocaleDateString() : ""}</div>
           </div>
           <div>
             <div className="text-muted-foreground text-xs">Customer Name</div>

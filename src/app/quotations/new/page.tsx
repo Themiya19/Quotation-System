@@ -336,7 +336,7 @@ function QuotationForm() {
     const userEmail = Cookies.get('userEmail');
     
     // Instead of submitting directly, show preview
-    let actionHistory = [`Created by ${userEmail} on ${new Date().toISOString().split('T')[0]}`];
+    let actionHistory = [`Created by ${userEmail} on ${new Date().toLocaleString()}`];
     
     // If we have action history from a request, include it
     if (encodedActionHistory) {
@@ -452,7 +452,7 @@ function QuotationForm() {
                 status: 'created',
                 actionHistory: [
                   ...previewData.actionHistory,
-                  `Created quotation ${newQuotation.quotationNo} on ${new Date().toISOString().split('T')[0]}`
+                  `Created quotation ${newQuotation.quotationNo} on ${new Date().toLocaleString()}`
                 ]
               }),
             });

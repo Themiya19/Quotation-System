@@ -108,8 +108,8 @@ export default function QuotationRequestPage() {
         title: values.title,
         description: values.description,
         company: values.company,
-        date: new Date().toISOString().split('T')[0],
-        actionHistory: [`Requested by ${userName} (${userEmail}) on ${new Date().toISOString().split('T')[0]}`],
+        date: new Date().toLocaleString(),
+        actionHistory: [`Requested by ${userName} (${userEmail}) on ${new Date().toLocaleString()}`],
         status: 'pending' as const,
         userEmail: userEmail
       };

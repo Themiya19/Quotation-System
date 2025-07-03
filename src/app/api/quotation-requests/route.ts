@@ -65,7 +65,17 @@ export async function POST(request: Request) {
     if (data.userEmail && data.actionHistory && data.actionHistory.length > 0) {
       const firstAction = data.actionHistory[0];
       if (firstAction.includes('Requested by')) {
-        data.actionHistory[0] = `${firstAction} (Email: ${data.userEmail})`;
+        // Replace the date part with date and time
+        const now = new Date();
+        data.actionHistory[0] = `Requested by ${data.customerName} (${data.company}, ${data.userEmail}) on ${now.toLocaleString()}`;
+      }
+    }
+    // Ensure date is in MySQL DATE format (YYYY-MM-DD)
+    let mysqlDate = data.date;
+    if (data.date) {
+      const d = new Date(data.date);
+      if (!isNaN(d.getTime())) {
+        mysqlDate = d.toISOString().split('T')[0];
       }
     }
     // Insert the request
@@ -78,7 +88,7 @@ export async function POST(request: Request) {
         data.title,
         data.description,
         data.company,
-        data.date,
+        mysqlDate,
         data.status,
         data.userEmail,
       ]

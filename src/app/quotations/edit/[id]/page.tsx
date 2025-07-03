@@ -281,7 +281,7 @@ export default function EditQuotationPage() {
           annexureUrl: "",
           actionHistory: [
             ...quotation.actionHistory,
-            `Annexure removed on ${new Date().toISOString().split('T')[0]}`
+            `Annexure removed on ${new Date().toLocaleString()}`
           ]
         };
 
@@ -394,7 +394,7 @@ export default function EditQuotationPage() {
         amount: finalTotal,
         actionHistory: [
           ...quotation.actionHistory,
-          `Edited on ${new Date().toISOString().split("T")[0]}`,
+          `Edited on ${new Date().toLocaleString()}`,
         ],
       };
 

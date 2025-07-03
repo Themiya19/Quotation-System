@@ -91,7 +91,8 @@ export async function POST(req: Request) {
       ]
     );
     // Always insert the initial action into ActionHistory
-    const initialAction = `Created by ${userEmail} on ${new Date().toISOString().split('T')[0]}`;
+    const now = new Date();
+    const initialAction = `Created by ${userEmail} on ${now.toLocaleString()}`;
     await pool.query(
       'INSERT INTO ActionHistory (quotationId, action) VALUES (?, ?)',
       [quotationId, initialAction]

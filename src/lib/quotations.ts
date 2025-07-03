@@ -62,7 +62,7 @@ export async function deleteQuotation(id: string): Promise<boolean> {
 // Status update functions
 export async function approveQuotation(id: string): Promise<Quotation | null> {
   const currentQuotation = await getQuotationById(id);
-  const currentDate = new Date().toISOString().split('T')[0];
+  const currentDate = new Date().toLocaleString();
   const newAction = `Approved on ${currentDate}`;
   const newActionHistory = [...(currentQuotation?.actionHistory || []), newAction];
   return updateQuotation(id, { internalStatus: 'approved', actionHistory: newActionHistory });
@@ -70,7 +70,7 @@ export async function approveQuotation(id: string): Promise<Quotation | null> {
 
 export async function rejectQuotation(id: string): Promise<Quotation | null> {
   const currentQuotation = await getQuotationById(id);
-  const currentDate = new Date().toISOString().split('T')[0];
+  const currentDate = new Date().toLocaleString();
   const newAction = `Rejected on ${currentDate}`;
   const newActionHistory = [...(currentQuotation?.actionHistory || []), newAction];
   return updateQuotation(id, { internalStatus: 'rejected', actionHistory: newActionHistory });
@@ -78,7 +78,7 @@ export async function rejectQuotation(id: string): Promise<Quotation | null> {
 
 export async function requestReviseQuotation(id: string): Promise<Quotation | null> {
   const currentQuotation = await getQuotationById(id);
-  const currentDate = new Date().toISOString().split('T')[0];
+  const currentDate = new Date().toLocaleString();
   const newAction = `Revision requested on ${currentDate}`;
   const newActionHistory = [...(currentQuotation?.actionHistory || []), newAction];
   return updateQuotation(id, { internalStatus: 'request-revise', actionHistory: newActionHistory });
@@ -148,7 +148,7 @@ export async function clientApproveQuotation(id: string): Promise<Quotation | nu
     return null;
   }
   
-  const currentDate = new Date().toISOString().split('T')[0];
+  const currentDate = new Date().toLocaleString();
   const newActionHistory = [...currentQuotation.actionHistory, `Client approval set on ${currentDate}`];
   
   return updateQuotation(id, { 
@@ -173,7 +173,7 @@ export async function clientRejectQuotation(id: string): Promise<Quotation | nul
     return null;
   }
   
-  const currentDate = new Date().toISOString().split('T')[0];
+  const currentDate = new Date().toLocaleString();
   const newActionHistory = [...currentQuotation.actionHistory, `Client rejection set on ${currentDate}`];
   
   return updateQuotation(id, { 

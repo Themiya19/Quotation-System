@@ -197,7 +197,7 @@ export function RequestedQuotationsTable({
                   onMouseLeave={handleMouseLeave}
                 >
                   <TableCell>{quotation.id}</TableCell>
-                  <TableCell>{quotation.date}</TableCell>
+                  <TableCell>{quotation.date ? new Date(quotation.date).toLocaleDateString() : ""}</TableCell>
                   <TableCell>{quotation.customerName}</TableCell>
                   <TableCell>{getCompanyName(quotation.company)}</TableCell>
                   <TableCell>{quotation.project}</TableCell>

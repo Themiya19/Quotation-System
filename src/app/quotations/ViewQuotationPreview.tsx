@@ -155,7 +155,7 @@ export default function ViewQuotationPreview({
                   </div>
                   <div className="grid grid-cols-2 gap-2">
                     <div className="font-medium">Created On:</div>
-                    <div>{quotation.date}</div>
+                    <div>{quotation.date ? new Date(quotation.date).toLocaleDateString() : ""}</div>
                   </div>
                   <div className="grid grid-cols-2 gap-2">
                     <div className="font-medium">Created By:</div>
@@ -312,7 +312,7 @@ export default function ViewQuotationPreview({
             <div className="text-right">
               <h3 className="text-xl font-bold text-blue-900 mb-2">Quotation</h3>
               <p className="text-gray-600">Quote No. {quotation.quotationNo}</p>
-              <p className="text-gray-600">{quotation.date}</p>
+              <p className="text-gray-600">{quotation.date ? new Date(quotation.date).toLocaleDateString() : ""}</p>
             </div>
           </div>
 
