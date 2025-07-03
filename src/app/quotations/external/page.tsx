@@ -60,6 +60,8 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { MoreHorizontal } from "lucide-react";
+import uiConfig from '../../../../data/ui-config.json' assert { type: 'json' };
+import { format as formatDate, parseISO } from 'date-fns';
 
 const ITEMS_PER_PAGE = 15;
 
@@ -736,7 +738,7 @@ export default function ExternalQuotationsPage() {
                       {paginatedQuotations.map((quotation) => (
                         <TableRow key={quotation.id}>
                           <TableCell>{quotation.quotationNo}</TableCell>
-                          <TableCell>{quotation.date ? new Date(quotation.date).toLocaleDateString() : ""}</TableCell>
+                          <TableCell>{quotation.date ? formatDate(parseISO(quotation.date), uiConfig.dateFormat) : ""}</TableCell>
                           <TableCell>{getCompanyName(quotation.company)}</TableCell>
                           <TableCell>{quotation.project}</TableCell>
                           <TableCell>{quotation.title}</TableCell>
@@ -975,7 +977,7 @@ export default function ExternalQuotationsPage() {
                   {paginatedQuotations.map((quotation) => (
                     <TableRow key={quotation.id}>
                       <TableCell>{quotation.quotationNo}</TableCell>
-                      <TableCell>{quotation.date ? new Date(quotation.date).toLocaleDateString() : ""}</TableCell>
+                      <TableCell>{quotation.date ? formatDate(parseISO(quotation.date), uiConfig.dateFormat) : ""}</TableCell>
                       <TableCell>{getCompanyName(quotation.company)}</TableCell>
                       <TableCell>{quotation.project}</TableCell>
                       <TableCell>{quotation.title}</TableCell>

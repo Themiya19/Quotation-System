@@ -9,6 +9,8 @@ import {
 import { type QuotationRequest } from "@/types/quotationRequest";
 import { useCompanyStore } from "@/lib/companies";
 import { useEffect, useCallback } from "react";
+import uiConfig from '../../data/ui-config.json' assert { type: 'json' };
+import { format as formatDate, parseISO } from 'date-fns';
 
 interface QuotationsTableProps {
   quotations: QuotationRequest[];
@@ -55,7 +57,7 @@ export function QuotationsTable({
           {quotations.map((quotation) => (
             <TableRow key={quotation.id}>
               <TableCell>{quotation.id}</TableCell>
-              <TableCell>{quotation.date ? new Date(quotation.date).toLocaleDateString() : ""}</TableCell>
+              <TableCell>{quotation.date ? formatDate(parseISO(quotation.date), uiConfig.dateFormat) : ""}</TableCell>
               <TableCell>{quotation.customerName}</TableCell>
               <TableCell>{getCompanyName(quotation.company)}</TableCell>
               <TableCell>{quotation.project}</TableCell>
