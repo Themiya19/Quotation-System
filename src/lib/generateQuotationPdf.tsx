@@ -323,7 +323,7 @@ const styles = StyleSheet.create({
           <Text style={styles.quotationTitle}>Quotation</Text>
           <Text style={styles.quotationDetails}>Quote No. {quotation.quotationNo}</Text>
           <Text style={styles.quotationDetails}>
-            {quotation.date ? new Date(quotation.date).toLocaleDateString() : ""}
+            {quotation.date ? new Date(quotation.date).toLocaleDateString('en-GB', { day: '2-digit', month: '2-digit', year: 'numeric' }) : ""}
           </Text>
         </View>
       </View>
@@ -369,7 +369,7 @@ const styles = StyleSheet.create({
             <Text style={styles.infoDataText}>{quotation.paymentTerms}</Text>
           </View>
           <View style={styles.infoDataCellLast}>
-            <Text style={styles.infoDataText}>{quotation.dueDate}</Text>
+            <Text style={styles.infoDataText}>{quotation.dueDate ? new Date(quotation.dueDate).toLocaleDateString('en-GB', { day: '2-digit', month: '2-digit', year: 'numeric' }) : ""}</Text>
           </View>
         </View>
       </View>
